@@ -1,5 +1,5 @@
 """
-ASGI config for badmint project.
+ASGI config for badmint_project project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 

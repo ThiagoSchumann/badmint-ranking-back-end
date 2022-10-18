@@ -1,5 +1,5 @@
 """
-WSGI config for badmint project.
+WSGI config for badmint_project project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
