@@ -18,3 +18,5 @@ api/models/__pycache__/
 api/serializers/__pycache__/
 
 api/views/__pycache__/
+
+staticfiles/
