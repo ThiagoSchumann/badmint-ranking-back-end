@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -25,8 +24,10 @@ SECRET_KEY = 'django-insecure-9#0d(r-$43n$hq&&lb6yhg^65$2f=qxh-n%lhs(zjhj=trsq5m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'https://badmint-api-xf2jb.ondigitalocean.app/', ]
-
+ALLOWED_HOSTS = [
+    'badmint-api-xf2jb.ondigitalocean.app',
+    '127.0.0.1',
+]
 
 # Application definition
 
@@ -72,20 +73,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'badmint.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-             'default': {
-                 'ENGINE': 'django.db.backends.postgresql',
-                 'NAME': 'railway',
-                 'USER': 'postgres',
-                 'PASSWORD': 'XUAEdr0uv12Yz5q7GtS7',
-                 'HOST': 'containers-us-west-91.railway.app',
-                 'PORT': '7063',
-             },
-        }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'XUAEdr0uv12Yz5q7GtS7',
+        'HOST': 'containers-us-west-91.railway.app',
+        'PORT': '7063',
+    },
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -105,7 +105,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -116,7 +115,6 @@ TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
