@@ -1,7 +1,6 @@
 from django.db import models
 
-# __author:Barth
-class category(models.Model):
+class Category(models.Model):
 
     name = models.TextField(max_length=255,
                             verbose_name='Nome do Arquivo')
