@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'badmint-api-xf2jb.ondigitalocean.app',
+    'https://badmint-back-end-develop-7v2jv.ondigitalocean.app/',
     '127.0.0.1',
 ]
 
