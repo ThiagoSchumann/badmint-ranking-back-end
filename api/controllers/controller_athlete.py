@@ -1,5 +1,5 @@
 from api.models import Athlete
 
-def category_get_all():
+def athlete_get_all():
     return Athlete.objects.all()
 
