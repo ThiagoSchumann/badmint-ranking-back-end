@@ -1,8 +1,6 @@
 from django.contrib.auth.models import User
-from django.core.files.storage import FileSystemStorage
 from django.db import models
 
-fs = FileSystemStorage(location='/media/sheets')
 
 class File(models.Model):
     user = models.ForeignKey(User,
@@ -12,8 +10,7 @@ class File(models.Model):
                             verbose_name='Nome do Arquivo')
     timestamp = models.DateTimeField(auto_now=True,
                                      verbose_name='Data/Hora')
-    file = models.FileField(storage=fs,
-                            verbose_name='Arquivo')
+    file = models.FileField()
 
     class Meta:
         verbose_name = 'Arquivo de Importação'

@@ -20,3 +20,5 @@ api/serializers/__pycache__/
 api/views/__pycache__/
 
 staticfiles/
+
+media_root/
