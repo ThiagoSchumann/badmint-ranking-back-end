@@ -85,11 +85,11 @@ WSGI_APPLICATION = 'badmint.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'e0XZMrW4RxlJdYVErlfV',
-        'HOST': 'containers-us-west-30.railway.app',
-        'PORT': '7940',
+        'NAME': 'defaultdb',
+        'USER': 'badmint',
+        'PASSWORD': 'AVNS_CD6toKAyIc0Zb5FRIzo',
+        'HOST': 'badmint-db-do-user-11192215-0.b.db.ondigitalocean.com',
+        'PORT': '25060',
     },
 }
 
