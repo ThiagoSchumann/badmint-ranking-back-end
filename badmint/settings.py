@@ -85,11 +85,11 @@ WSGI_APPLICATION = 'badmint.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'e0XZMrW4RxlJdYVErlfV',
-        'HOST': 'containers-us-west-30.railway.app',
-        'PORT': '7940',
+        'NAME': 'defaultdb',
+        'USER': 'badmint',
+        'PASSWORD': 'AVNS_CD6toKAyIc0Zb5FRIzo',
+        'HOST': 'badmint-db-do-user-11192215-0.b.db.ondigitalocean.com',
+        'PORT': '25060',
     },
 }
 
@@ -125,9 +125,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-STATIC_URL = "/static/"
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root')
+MEDIA_URL = '/media/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
