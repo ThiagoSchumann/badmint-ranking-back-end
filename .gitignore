@@ -22,3 +22,5 @@ api/views/__pycache__/
 staticfiles/
 
 media_root/
+
+__pycache__/
