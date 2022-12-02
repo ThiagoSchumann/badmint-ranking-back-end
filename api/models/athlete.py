@@ -3,13 +3,20 @@ from django.db import models
 
 class Athlete(models.Model):
     name = models.TextField(max_length=255,
-                            verbose_name='Nome do Atleta')
+                            verbose_name='Nome do Atleta',
+                            null=True
+                            )
     athlete_code = models.TextField(max_length=255,
-                                    verbose_name='Id do Atleta')
-    birth_date = models.DateField(verbose_name='Nascimento')
+                                    verbose_name='Id do Atleta',
+                                    null=True
+                                    )
+    birth_date = models.DateField(verbose_name='Nascimento',
+                                  null=True
+                                  )
     club = models.TextField(max_length=255,
                             verbose_name='Clube',
-                            default=' ')
+                            null=True
+                            )
 
     class Meta:
         verbose_name = 'Atleta'

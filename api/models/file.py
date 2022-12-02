@@ -1,10 +1,11 @@
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from badmint.settings import MEDIA_ROOT
-from api.models import Athlete
-import pandas as pd
+from api.models import Athlete, Category
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+import pandas as pd
 
 
 class TypeFile(models.IntegerChoices):
@@ -38,18 +39,74 @@ class File(models.Model):
 def file_post_save(sender, instance, **kwargs):
 
     if instance.type == TypeFile.ATHLETE:
-
-        read_file = pd.read_excel(
-                                  MEDIA_ROOT + '/' + instance.file.name,
-                                  skiprows=3,
-                                  sheet_name='Players'
-                                 )
-        df = pd.DataFrame(read_file, columns=['Name', 'DOB', 'Member ID', 'Club'])
+        athlete_sheet = pd.read_excel(
+                              MEDIA_ROOT + '/' + instance.file.name,
+                              skiprows=3,
+                              sheet_name='Players'
+                             )
+        df = pd.DataFrame(
+                          athlete_sheet,
+                          columns=['Name', 'DOB', 'Member ID', 'Club']
+                         )
 
         for idx in df.index:
-            athlete = Athlete.objects.create(
-                                              name=pd.Series(data=df.iloc[idx].squeeze())["Name"],
-                                              birth_date=pd.Series(data=df.iloc[idx].squeeze())["DOB"],
-                                              athlete_code=pd.Series(data=df.iloc[idx].squeeze())["Member ID"],
-                                              club=pd.Series(data=df.iloc[idx].squeeze())["Club"],
+            Athlete.objects.update_or_create(
+                                             name=pd.Series(data=df.iloc[idx].squeeze())["Name"],
+                                             birth_date=pd.Series(data=df.iloc[idx].squeeze())["DOB"],
+                                             athlete_code=pd.Series(data=df.iloc[idx].squeeze())["Member ID"],
+                                             club=pd.Series(data=df.iloc[idx].squeeze())["Club"],
                                             )
+    elif instance.type == TypeFile.CHAMPIONSHIP:
+        championship_sheet = pd.read_excel(
+                                           MEDIA_ROOT + '/' + instance.file.name,
+                                           header=None
+                                          )
+        df_championship = pd.DataFrame(
+                                        championship_sheet
+                                      )
+
+        for idx in df_championship.index:
+            # AGORA VAMOS LER AS CATEGORIAS
+            if isinstance(df_championship.iloc[idx].squeeze()[0], str):
+                # df_championship.iloc[idx].squeeze()[0] <- Categoria
+                try:
+                    category = Category.objects.get(name=df_championship.iloc[idx].squeeze()[0][19:])
+                except ObjectDoesNotExist:
+                    category = Category.objects.create(name=df_championship.iloc[idx].squeeze()[0][19:])
+            elif isinstance(df_championship.iloc[idx].squeeze()[0], float):
+                if pd.Series(data=df_championship.iloc[idx].squeeze())[2] == 'Position':
+                    pass
+                else:
+                    try:
+                        athlete = Athlete.objects.get(
+                                                      athlete_code=df_championship.iloc[idx].squeeze()[4]
+                                                     )
+                    except ObjectDoesNotExist:
+                        try:
+                            athlete = Athlete.objects.get(
+                                                          name=df_championship.iloc[idx].squeeze()[3]
+                                                         )
+                        except ObjectDoesNotExist:
+                            athlete = Athlete.objects.update_or_create(
+                                                                       athlete_code=df_championship.iloc[idx].squeeze()[4],
+                                                                       name=df_championship.iloc[idx].squeeze()[3]
+                                                                      )
+                    from api.models import Team
+                    team = Team.objects.update_or_create(
+                                                         athlete_1__id=athlete.id,
+
+                                                         name=athlete.name
+                                              )
+
+                    print(team.id, team.nome)
+
+            #if type(df_championship.iloc[idx].squeeze()[0]) == <class 'str'>:
+            #    print(type(df_championship.iloc[idx].squeeze()[0]))
+            #    print('categoria > {categoria}'.format(categoria=df_championship.iloc[idx].squeeze()[0]))
+
+
+            # AGORA VAMOS LER O BLOCO
+
+
+
+

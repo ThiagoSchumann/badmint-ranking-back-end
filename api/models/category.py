@@ -3,13 +3,12 @@ from django.db import models
 
 class Category(models.Model):
     name = models.TextField(max_length=255,
-                            verbose_name='Nome do Arquivo')
-    age = models.IntegerField(verbose_name='Idade de Corte')
+                            verbose_name='Nome da Categoria')
+    age = models.IntegerField(verbose_name='Idade de Corte',
+                              null=True)
     genre = models.TextField(max_length=255,
-                             verbose_name='Sexo')
-    importation_file_name = models.TextField(max_length=255,
-                                             verbose_name='Nome do Arquivo de Importação')
-
+                             verbose_name='Genero',
+                             null=True)
     class Meta:
         verbose_name = 'Categoria'
 

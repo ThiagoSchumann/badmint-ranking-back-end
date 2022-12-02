@@ -3,12 +3,13 @@ from api.models import Athlete
 
 
 class Team(models.Model):
-    id_athlete_1: models.ForeignKey(Athlete,
-                                    on_delete=models.CASCADE,
-                                    verbose_name='Atleta 1')
-    id_athlete_2: models.ForeignKey(Athlete,
-                                    on_delete=models.CASCADE,
-                                    verbose_name='Atleta 2')
+    athlete_1: models.ForeignKey(Athlete,
+                                 on_delete=models.CASCADE,
+                                 verbose_name='Atleta 1')
+    athlete_2: models.ForeignKey(Athlete,
+                                 on_delete=models.CASCADE,
+                                 verbose_name='Atleta 2',
+                                 null=True)
     name: models.TextField(max_length=255,
                            verbose_name='Nome')
 
