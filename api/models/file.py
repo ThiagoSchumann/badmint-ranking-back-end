@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from badmint.settings import MEDIA_ROOT
-from api.models import Athlete, Category
+from api.models import Athlete, Category, Team
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 import pandas as pd
@@ -91,21 +91,17 @@ def file_post_save(sender, instance, **kwargs):
                                                                        athlete_code=df_championship.iloc[idx].squeeze()[4],
                                                                        name=df_championship.iloc[idx].squeeze()[3]
                                                                       )
-                    from api.models import Team
-                    team = Team.objects.update_or_create(
-                                                         athlete_1__id=athlete.id,
 
-                                                         name=athlete.name
-                                              )
+                    Team.objects.update_or_create(
+                                                  athlete_1=athlete,
+                                                  name=athlete.name
+                                                 )
 
-                    print(team.id, team.nome)
+                    team = Team.objects.get(
+                                            athlete_1=athlete,
+                                            name=athlete.name
+                                           )
 
-            #if type(df_championship.iloc[idx].squeeze()[0]) == <class 'str'>:
-            #    print(type(df_championship.iloc[idx].squeeze()[0]))
-            #    print('categoria > {categoria}'.format(categoria=df_championship.iloc[idx].squeeze()[0]))
-
-
-            # AGORA VAMOS LER O BLOCO
 
 
 

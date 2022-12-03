@@ -15,7 +15,7 @@ router.register(r'file', FileViewSet)
 
 
 urlpatterns = [
-    path('', lambda req: redirect('/api/v1/')),
+    path('', lambda req: redirect('/admin/')),
     path('admin/', admin.site.urls),
     path('api/v1/', include(router.urls)),
     path('api/v1/docs/', SwaggerSchemaView.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

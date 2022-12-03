@@ -4,7 +4,7 @@ from .championship import Championship
 from .championship_sheet_importation import ChampionshipSheetImportation
 from .classification_score import ClassificationScore
 from .configuration_model_ranking import ConfigurationModelRanking
+from .team import Team
 from .file import File
 from .ranking import Ranking
-from .team import Team
 from .team_championship_stage_category import TeamChampionshipStageCategory
