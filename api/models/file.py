@@ -1,8 +1,10 @@
+from datetime import date, timedelta
+
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from badmint.settings import MEDIA_ROOT
-from api.models import Athlete, Category, Team, Championship, RankingClassification
+from api.models import Athlete, Category, Team, Championship, RankingClassification, Ranking, ClassificationScore
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 import pandas as pd
@@ -31,6 +33,8 @@ class File(models.Model):
                                default=TypeFile.ATHLETE,
                                choices=TypeFile.choices,
                                verbose_name='Tipo de Usuário')
+    championship_date = models.DateField(null=True)
+    championship_name = models.TextField(null=True, max_length=255, verbose_name='Nome campeonato')
 
     class Meta:
         verbose_name = 'Arquivo de Importação'
@@ -68,10 +72,14 @@ def file_post_save(sender, instance, **kwargs):
             championship_sheet
         )
         tab = pd.ExcelFile(MEDIA_ROOT + '/' + instance.file.name).sheet_names
-        print(tab[0][16:])
-        championship = Championship.objects.get_or_create(
-            name=tab[0][16:]
-        )
+
+        if Championship.objects.get(name=tab[0][16:]) is None:
+            championship = Championship.objects.update_or_create(
+                name=tab[0][16:],
+                occurrence_date=instance.championship_date
+            )
+
+        championship = Championship.objects.get(name=tab[0][16:])
 
         for idx in df_championship.index:
             if isinstance(df_championship.iloc[idx].squeeze()[0], str):
@@ -83,6 +91,11 @@ def file_post_save(sender, instance, **kwargs):
                 if pd.Series(data=df_championship.iloc[idx].squeeze())[2] == 'Position':
                     pass
                 else:
+                    if isinstance(df_championship.iloc[idx].squeeze()[2], float):
+                        athlete1 = athlete
+                    else:
+                        athlete1 = None
+
                     try:
                         athlete = Athlete.objects.get(
                             athlete_code=df_championship.iloc[idx].squeeze()[4]
@@ -98,10 +111,37 @@ def file_post_save(sender, instance, **kwargs):
                                 name=df_championship.iloc[idx].squeeze()[3]
                             )
 
-                    Team.objects.get_or_create(
-                        athlete_1=athlete,
-                        name=athlete.name
-                    )
+                    if category.name[0:1] == 'D':
+                        if athlete1 is not None:
+                            team = Team.objects.create(
+                                athlete_1=athlete1,
+                                athlete_2=athlete,
+                                name=athlete1.name + '  e  ' + athlete.name
+                            )
+
+                            classific = df_championship.iloc[idx].squeeze()[0]
+                            classific = df_championship.iloc[idx].squeeze()[0]
+                            classific = df_championship.iloc[idx].squeeze()[0]
+                            classific = df_championship.iloc[idx].squeeze()[0]
+                            print(classific)
+                            classificationScore = ClassificationScore.objects.create(
+                                team=team,
+                                championship=championship,
+                                category=category,
+                                classification=0,#df_championship.iloc[idx].squeeze()[2],
+                                score=0.0,
+                                expiration_date=championship.occurrence_date + timedelta(weeks=52),
+                            )
+
+                    else:
+                        team = Team.objects.create(
+                            athlete_1=athlete,
+                            name=athlete.name
+                        )
+
+
+
+
 
                     ranking_classification = RankingClassification.objects.get_or_create(
                         classification=1,
@@ -111,5 +151,8 @@ def file_post_save(sender, instance, **kwargs):
                         athlete1Age=athlete.age(),
                         athlete1Club=athlete.club,
                         category=category.id,
-                        category_description=category.name
+                        category_description=category.name,
+                        ranking=Ranking.objects.get(id=1).id,
+                        period_date=instance.championship_date,
+                        championship=instance.championship_name
                     )
