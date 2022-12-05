@@ -5,7 +5,7 @@ from .championship_sheet_importation import ChampionshipSheetImportation
 from .classification_score import ClassificationScore
 from .configuration_model_ranking import ConfigurationModelRanking
 from .team import Team
+from .ranking_classification import RankingClassification
 from .file import File
 from .ranking import Ranking
 from .team_championship_stage_category import TeamChampionshipStageCategory
-from .ranking_classification import RankingClassification

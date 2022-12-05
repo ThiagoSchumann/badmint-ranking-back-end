@@ -1,10 +1,9 @@
-from rest_framework.generics import GenericAPIView
-from rest_framework.response import Response
+from rest_framework import viewsets
+
+from api.models import Ranking
+from api.serializers import RankingSerializer
 
 
-class ViewRankingMock(GenericAPIView):
-    def get(self, request, *args, **kwargs):
-        return Response({
-            'id': 1,
-            'label': 'Masculino Duplas Sub-17'
-        })
+class ViewRanking(viewsets.ModelViewSet):
+    queryset = Ranking.objects.all()
+    serializer_class = RankingSerializer

@@ -1,10 +1,9 @@
-from rest_framework.generics import GenericAPIView
-from rest_framework.response import Response
+from rest_framework import viewsets
+
+from api.models import Category
+from api.serializers.serializer_category import CategorySerializer
 
 
-class ViewCategoryMock(GenericAPIView):
-    def get(self, request, *args, **kwargs):
-        return Response({
-            'id': 1,
-            'label': 'Ranking Estadual de Santa Catarina'
-        })
+class ViewCategory(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer

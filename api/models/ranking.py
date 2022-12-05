@@ -2,8 +2,9 @@ from django.db import models
 
 
 class Ranking(models.Model):
-    name: models.TextField(max_length=255,
-                           verbose_name='Nome')
+    name = models.TextField(max_length=255,
+                            verbose_name='Nome',
+                            null=True)
 
     class Meta:
         verbose_name = 'Ranking'
