@@ -12,7 +12,8 @@ class RankingClassification(models.Model):
     athlete1Name = models.TextField(null=True,
                                     max_length=255,
                                     blank=True)
-    athlete1Age = models.IntegerField(null=True)
+    athlete1Age = models.IntegerField(null=True,
+                                      blank=True)
     athlete1Club = models.TextField(null=True,
                                     max_length=255,
                                     blank=True)
@@ -22,7 +23,8 @@ class RankingClassification(models.Model):
     athlete2Name = models.TextField(null=True,
                                     max_length=255,
                                     blank=True)
-    athlete2Age = models.IntegerField(null=True)
+    athlete2Age = models.IntegerField(null=True,
+                                      blank=True)
     athlete2Club = models.TextField(null=True,
                                     max_length=255,
                                     blank=True)
