@@ -33,8 +33,8 @@ class File(models.Model):
                                default=TypeFile.ATHLETE,
                                choices=TypeFile.choices,
                                verbose_name='Tipo de Usuário')
-    championship_date = models.DateField(null=True)
-    championship_name = models.TextField(null=True, max_length=255, verbose_name='Nome campeonato')
+    championship_date = models.DateField(null=True, blank=True, verbose_name='Data do Campeonato [PREENCHER APENAS NOS CASOS DE ARQUIVO DE CAMPEONATO]')
+    championship_name = models.TextField(null=True, max_length=255, verbose_name='Nome campeonato  [PREENCHER APENAS NOS CASOS DE ARQUIVO DE CAMPEONATO]', blank=True)
 
     class Meta:
         verbose_name = 'Arquivo de Importação'
@@ -73,12 +73,17 @@ def file_post_save(sender, instance, **kwargs):
         )
         tab = pd.ExcelFile(MEDIA_ROOT + '/' + instance.file.name).sheet_names
 
-        if Championship.objects.get(name=tab[0][16:]) is None:
-            championship = Championship.objects.update_or_create(
+        try:
+            if Championship.objects.get(name=tab[0][16:]) is None:
+                championship = Championship.objects.update_or_create(
+                    name=tab[0][16:],
+                    occurrence_date=instance.championship_date
+                )
+        except:
+            championship = Championship.objects.create(
                 name=tab[0][16:],
                 occurrence_date=instance.championship_date
             )
-
         championship = Championship.objects.get(name=tab[0][16:])
 
         for idx in df_championship.index:
@@ -118,18 +123,33 @@ def file_post_save(sender, instance, **kwargs):
                                 athlete_2=athlete,
                                 name=athlete1.name + '  e  ' + athlete.name
                             )
+                            if isinstance(df_championship.iloc[idx - 1].squeeze()[2], int):
+                                classif = df_championship.iloc[idx - 1].squeeze()[2]
+                            else:
+                                classif = df_championship.iloc[idx - 1].squeeze()[2][0:1]
 
-                            classific = df_championship.iloc[idx].squeeze()[0]
-                            classific = df_championship.iloc[idx].squeeze()[0]
-                            classific = df_championship.iloc[idx].squeeze()[0]
-                            classific = df_championship.iloc[idx].squeeze()[0]
-                            print(classific)
+                            score = 0.0
+                            if classif == 1:
+                                score = 1800
+                            elif classif == 2:
+                                score = 1600
+                            elif classif == 3:
+                                score = 1400
+                            elif classif == 4:
+                                score = 1200
+                            elif classif == 5:
+                                score = 1000
+                            elif classif == 6:
+                                score = 800
+                            elif classif == 7:
+                                score = 800
+
                             classificationScore = ClassificationScore.objects.create(
                                 team=team,
                                 championship=championship,
                                 category=category,
-                                classification=0,#df_championship.iloc[idx].squeeze()[2],
-                                score=0.0,
+                                classification=classif,
+                                score=score,
                                 expiration_date=championship.occurrence_date + timedelta(weeks=52),
                             )
 
@@ -139,20 +159,16 @@ def file_post_save(sender, instance, **kwargs):
                             name=athlete.name
                         )
 
-
-
-
-
-                    ranking_classification = RankingClassification.objects.get_or_create(
-                        classification=1,
-                        scorePoints=123123,
-                        athlete1MemberID=athlete.athlete_code,
-                        athlete1Name=athlete.name,
-                        athlete1Age=athlete.age(),
-                        athlete1Club=athlete.club,
-                        category=category.id,
-                        category_description=category.name,
-                        ranking=Ranking.objects.get(id=1).id,
-                        period_date=instance.championship_date,
-                        championship=instance.championship_name
-                    )
+                   #ranking_classification = RankingClassification.objects.get_or_create(
+                   #    classification=1,
+                   #    scorePoints=123123,
+                   #    athlete1MemberID=athlete.athlete_code,
+                   #    athlete1Name=athlete.name,
+                   #    athlete1Age=athlete.age(),
+                   #    athlete1Club=athlete.club,
+                   #    category=category.id,
+                   #    category_description=category.name,
+                   #    ranking=Ranking.objects.get(id=1).id,
+                   #    period_date=instance.championship_date,
+                   #    championship=instance.championship_name
+                   #)
