@@ -6,10 +6,10 @@ from django.contrib import admin
 from django.shortcuts import redirect
 
 
-from api.views import SwaggerSchemaView, ViewCategoryMock, ViewRankingMock, FileViewSet
+from api.views import SwaggerSchemaView, ViewCategoryMock, ViewRankingMock, FileViewSet, RankingClassificationViewset
 
 router = routers.DefaultRouter()
-#router.register(r'ranking-query', ViewRankingQueryMock)
+router.register(r'ranking-query', RankingClassificationViewset)
 router.register(r'file', FileViewSet)
 
 

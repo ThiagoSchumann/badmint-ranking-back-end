@@ -8,3 +8,4 @@ from .team import Team
 from .file import File
 from .ranking import Ranking
 from .team_championship_stage_category import TeamChampionshipStageCategory
+from .ranking_classification import RankingClassification

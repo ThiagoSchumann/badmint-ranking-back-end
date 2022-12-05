@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from badmint.settings import MEDIA_ROOT
-from api.models import Athlete, Category, Team
+from api.models import Athlete, Category, Team, Championship
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 import pandas as pd
@@ -64,11 +64,15 @@ def file_post_save(sender, instance, **kwargs):
         df_championship = pd.DataFrame(
                                         championship_sheet
                                       )
+        tab = pd.ExcelFile(MEDIA_ROOT + '/' + instance.file.name).sheet_names
+        print(tab[0][16:])
+        championship = Championship.objects.get_or_create(
+            name=tab[0][16:]
+        )
+
 
         for idx in df_championship.index:
-            # AGORA VAMOS LER AS CATEGORIAS
             if isinstance(df_championship.iloc[idx].squeeze()[0], str):
-                # df_championship.iloc[idx].squeeze()[0] <- Categoria
                 try:
                     category = Category.objects.get(name=df_championship.iloc[idx].squeeze()[0][19:])
                 except ObjectDoesNotExist:
@@ -92,15 +96,10 @@ def file_post_save(sender, instance, **kwargs):
                                                                        name=df_championship.iloc[idx].squeeze()[3]
                                                                       )
 
-                    Team.objects.update_or_create(
-                                                  athlete_1=athlete,
-                                                  name=athlete.name
-                                                 )
-
-                    team = Team.objects.get(
-                                            athlete_1=athlete,
-                                            name=athlete.name
-                                           )
+                    team = Team.objects.get_or_create(
+                                                         athlete_1=athlete,
+                                                         name=athlete.name
+                                                        )
 
 
 

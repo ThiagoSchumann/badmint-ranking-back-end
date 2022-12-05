@@ -1,1 +1,3 @@
 from .serializer_file import FileSerializer
+from .ranking_classification_serializer import RankingClassificationSerializer
+
