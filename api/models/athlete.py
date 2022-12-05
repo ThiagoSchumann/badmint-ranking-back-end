@@ -28,5 +28,6 @@ class Athlete(models.Model):
 
     def age(self):
         today = date.today()
-        age = today.year - self.birth_date.year - ((today.month, today.day) < (self.birth_date.month, self.birth_date.day))
+        age = today.year - self.birth_date.year - ((today.month, today.day) < (self.birth_date.month, self.birth_date.day)) if self.birth_date else 0
+
         return age

@@ -68,7 +68,6 @@ def file_post_save(sender, instance, **kwargs):
             championship_sheet
         )
         tab = pd.ExcelFile(MEDIA_ROOT + '/' + instance.file.name).sheet_names
-        print(tab[0][16:])
         championship = Championship.objects.get_or_create(
             name=tab[0][16:]
         )
@@ -93,15 +92,11 @@ def file_post_save(sender, instance, **kwargs):
                                 name=df_championship.iloc[idx].squeeze()[3]
                             )
                         except ObjectDoesNotExist:
-                            athlete = Athlete.objects.update_or_create(
+                            athlete, update = Athlete.objects.update_or_create(
                                 athlete_code=df_championship.iloc[idx].squeeze()[4],
                                 name=df_championship.iloc[idx].squeeze()[3]
                             )
-
-                    Team.objects.get_or_create(
-                        athlete_1=athlete,
-                        name=athlete.name
-                    )
+                    Team.objects.get_or_create(athlete_1=athlete, name=athlete.name)
 
                     ranking_classification = RankingClassification.objects.get_or_create(
                         classification=1,
