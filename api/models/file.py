@@ -106,10 +106,11 @@ def file_post_save(sender, instance, **kwargs):
                                 name=df_championship.iloc[idx].squeeze()[3]
                             )
                         except ObjectDoesNotExist:
-                            athlete = Athlete.objects.update_or_create(
+                            athlete, update = Athlete.objects.update_or_create(
                                 athlete_code=df_championship.iloc[idx].squeeze()[4],
                                 name=df_championship.iloc[idx].squeeze()[3]
                             )
+                    Team.objects.get_or_create(athlete_1=athlete, name=athlete.name)
 
                     if category.name[0:1] == 'D':
                         if athlete1 is not None:
