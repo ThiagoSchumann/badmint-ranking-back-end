@@ -89,6 +89,10 @@ CORS_ALLOW_HEADERS = [
 
 ROOT_URLCONF = 'badmint.urls'
 
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 TEMPLATES = [

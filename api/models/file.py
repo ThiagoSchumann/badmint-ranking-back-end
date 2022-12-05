@@ -110,5 +110,6 @@ def file_post_save(sender, instance, **kwargs):
                         athlete1Name=athlete.name,
                         athlete1Age=athlete.age(),
                         athlete1Club=athlete.club,
-                        category=category.name
+                        category=category.id,
+                        category_description=category.name
                     )
