@@ -33,8 +33,11 @@ class File(models.Model):
                                default=TypeFile.ATHLETE,
                                choices=TypeFile.choices,
                                verbose_name='Tipo de Usuário')
-    championship_date = models.DateField(null=True, blank=True, verbose_name='Data do Campeonato [PREENCHER APENAS NOS CASOS DE ARQUIVO DE CAMPEONATO]')
-    championship_name = models.TextField(null=True, max_length=255, verbose_name='Nome campeonato  [PREENCHER APENAS NOS CASOS DE ARQUIVO DE CAMPEONATO]', blank=True)
+    championship_date = models.DateField(null=True, blank=True,
+                                         verbose_name='Data do Campeonato [PREENCHER APENAS NOS CASOS DE ARQUIVO DE CAMPEONATO]')
+    championship_name = models.TextField(null=True, max_length=255,
+                                         verbose_name='Nome campeonato  [PREENCHER APENAS NOS CASOS DE ARQUIVO DE CAMPEONATO]',
+                                         blank=True)
 
     class Meta:
         verbose_name = 'Arquivo de Importação'
@@ -126,25 +129,79 @@ def file_post_save(sender, instance, **kwargs):
                             if isinstance(df_championship.iloc[idx - 1].squeeze()[2], int):
                                 classif = df_championship.iloc[idx - 1].squeeze()[2]
                             else:
+                                if df_championship.iloc[idx - 1].squeeze()[2][0:1] == 'P':
+                                    print('oi')
                                 classif = df_championship.iloc[idx - 1].squeeze()[2][0:1]
 
                             score = 0.0
                             if classif == 1:
-                                score = 1800
-                            elif classif == 2:
                                 score = 1600
+                            elif classif == 2:
+                                score = 1360
                             elif classif == 3:
-                                score = 1400
+                                score = 1120
                             elif classif == 4:
-                                score = 1200
+                                score = 1120
                             elif classif == 5:
-                                score = 1000
+                                score = 880
                             elif classif == 6:
-                                score = 800
+                                score = 880
                             elif classif == 7:
-                                score = 800
+                                score = 880
+                            elif classif == 8:
+                                score = 880
+                            elif classif == 9:
+                                score = 640
+                            elif classif == 10:
+                                score = 640
+                            elif classif == 11:
+                                score = 640
+                            elif classif == 12:
+                                score = 640
+                            elif classif == 13:
+                                score = 640
+                            elif classif == 14:
+                                score = 640
+                            elif classif == 15:
+                                score = 640
+                            elif classif == 16:
+                                score = 640
+                            elif classif == 17:
+                                score = 400
+                            elif classif == 18:
+                                score = 400
+                            elif classif == 19:
+                                score = 400
+                            elif classif == 20:
+                                score = 400
+                            elif classif == 21:
+                                score = 400
+                            elif classif == 22:
+                                score = 400
+                            elif classif == 23:
+                                score = 400
+                            elif classif == 24:
+                                score = 400
+                            elif classif == 25:
+                                score = 400
+                            elif classif == 26:
+                                score = 400
+                            elif classif == 27:
+                                score = 400
+                            elif classif == 28:
+                                score = 400
+                            elif classif == 29:
+                                score = 400
+                            elif classif == 30:
+                                score = 400
+                            elif classif == 31:
+                                score = 400
+                            elif classif == 32:
+                                score = 400
+                            else:
+                                score = 320
 
-                            classificationScore = ClassificationScore.objects.create(
+                            ClassificationScore.objects.create(
                                 team=team,
                                 championship=championship,
                                 category=category,
@@ -158,17 +215,132 @@ def file_post_save(sender, instance, **kwargs):
                             athlete_1=athlete,
                             name=athlete.name
                         )
+                        if isinstance(df_championship.iloc[idx].squeeze()[2], int):
+                            classif = df_championship.iloc[idx].squeeze()[2]
+                        else:
+                            classif = df_championship.iloc[idx].squeeze()[2][0:1]
 
-                   #ranking_classification = RankingClassification.objects.get_or_create(
-                   #    classification=1,
-                   #    scorePoints=123123,
-                   #    athlete1MemberID=athlete.athlete_code,
-                   #    athlete1Name=athlete.name,
-                   #    athlete1Age=athlete.age(),
-                   #    athlete1Club=athlete.club,
-                   #    category=category.id,
-                   #    category_description=category.name,
-                   #    ranking=Ranking.objects.get(id=1).id,
-                   #    period_date=instance.championship_date,
-                   #    championship=instance.championship_name
-                   #)
+                        score = 0.0
+                        if classif == 1:
+                            score = 1600
+                        elif classif == 2:
+                            score = 1360
+                        elif classif == 3:
+                            score = 1120
+                        elif classif == 4:
+                            score = 1120
+                        elif classif == 5:
+                            score = 880
+                        elif classif == 6:
+                            score = 880
+                        elif classif == 7:
+                            score = 880
+                        elif classif == 8:
+                            score = 880
+                        elif classif == 9:
+                            score = 640
+                        elif classif == 10:
+                            score = 640
+                        elif classif == 11:
+                            score = 640
+                        elif classif == 12:
+                            score = 640
+                        elif classif == 13:
+                            score = 640
+                        elif classif == 14:
+                            score = 640
+                        elif classif == 15:
+                            score = 640
+                        elif classif == 16:
+                            score = 640
+                        elif classif == 17:
+                            score = 400
+                        elif classif == 18:
+                            score = 400
+                        elif classif == 19:
+                            score = 400
+                        elif classif == 20:
+                            score = 400
+                        elif classif == 21:
+                            score = 400
+                        elif classif == 22:
+                            score = 400
+                        elif classif == 23:
+                            score = 400
+                        elif classif == 24:
+                            score = 400
+                        elif classif == 25:
+                            score = 400
+                        elif classif == 26:
+                            score = 400
+                        elif classif == 27:
+                            score = 400
+                        elif classif == 28:
+                            score = 400
+                        elif classif == 29:
+                            score = 400
+                        elif classif == 30:
+                            score = 400
+                        elif classif == 31:
+                            score = 400
+                        elif classif == 32:
+                            score = 400
+                        else:
+                            score = 320
+
+                        ClassificationScore.objects.create(
+                            team=team,
+                            championship=championship,
+                            category=category,
+                            classification=classif,
+                            score=score,
+                            expiration_date=championship.occurrence_date + timedelta(weeks=52),
+                        )
+
+        for team in Team.objects.all():
+            score = 0.0
+            for category in Category.objects.all():
+                try:
+                    test = ClassificationScore.objects.all().filter(team=team, category=category)
+
+                    if test is not None:
+
+                        for classificationScore in ClassificationScore.objects.all().filter(team=team, category=category):
+                            score = score + classificationScore.score
+
+                        try:
+                            athlete2MemberID = team.athlete_2.athlete_code
+                            RankingClassification.objects.create(
+                                classification=0,
+                                scorePoints=score,
+                                athlete1MemberID=team.athlete_1.athlete_code,
+                                athlete1Name=team.athlete_1.name,
+                                athlete1Age=team.athlete_1.age(),
+                                athlete1Club=team.athlete_1.club,
+                                category=category.id,
+                                category_description=category.name,
+                                ranking=1,
+                                ranking_description='Ranking Estadual SC',
+                                period_date=instance.championship_date,
+                                athlete2MemberID=team.athlete_2.athlete_code,
+                                athlete2Name=team.athlete_2.name,
+                                athlete2Age=team.athlete_2.age(),
+                                athlete2Club=team.athlete_2.club,
+                            )
+                        except:
+                            RankingClassification.objects.create(
+                                classification=0,
+                                scorePoints=score,
+                                athlete1MemberID=team.athlete_1.athlete_code,
+                                athlete1Name=team.athlete_1.name,
+                                athlete1Age=team.athlete_1.age(),
+                                athlete1Club=team.athlete_1.club,
+                                category=category.id,
+                                category_description=category.name,
+                                ranking=1,
+                                ranking_description='Ranking Estadual SC',
+                                period_date=instance.championship_date,
+                            )
+
+                except ClassificationScore.DoesNotExist:
+                    pass
