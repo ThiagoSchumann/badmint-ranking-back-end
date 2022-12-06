@@ -5,7 +5,11 @@ from django.apps import apps
 from django.contrib.auth.admin import UserAdmin
 from .models import *
 
-models = apps.get_models()
+
+@admin.register(File)
+class FileAdmin(admin.ModelAdmin):
+    list_display = ('name',
+                    'type')
 
 
 @admin.register(Athlete)
@@ -16,11 +20,31 @@ class AthleteAdmin(admin.ModelAdmin):
                     'club')
 
 
-exclude_models = []
+@admin.register(ClassificationScore)
+class ClassificationScoreAdmin(admin.ModelAdmin):
+    list_display = ('team',
+                    'championship',
+                    'category',
+                    'classification',
+                    'score',
+                    'expiration_date')
 
-for model in models:
-    try:
-        if model not in exclude_models:
-            admin.site.register(model)
-    except admin.sites.AlreadyRegistered:
-        pass
+
+@admin.register(RankingClassification)
+class RankingClassificationAdmin(admin.ModelAdmin):
+    list_display = ('classification',
+                    'scorePoints',
+                    'championship',
+                    'period_date',
+                    'category',
+                    'category_description',
+                    'ranking',
+                    'ranking_description',
+                    'athlete1MemberID',
+                    'athlete1Name',
+                    'athlete1Age',
+                    'athlete1Club',
+                    'athlete2MemberID',
+                    'athlete2Name',
+                    'athlete2Age',
+                    'athlete2Club')
