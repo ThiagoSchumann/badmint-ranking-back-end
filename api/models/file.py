@@ -207,7 +207,7 @@ def file_post_save(sender, instance, **kwargs):
                                 category=category,
                                 classification=classif,
                                 score=score,
-                                expiration_date=championship.occurrence_date + timedelta(weeks=52),
+                                expiration_date=championship.occurrence_date + timedelta(weeks=52) if championship.occurrence_date else None,
                             )
 
                     else:
@@ -294,7 +294,7 @@ def file_post_save(sender, instance, **kwargs):
                             category=category,
                             classification=classif,
                             score=score,
-                            expiration_date=championship.occurrence_date + timedelta(weeks=52),
+                            expiration_date=championship.occurrence_date + timedelta(weeks=52) if championship.occurrence_date else None,
                         )
 
         for team in Team.objects.all():
