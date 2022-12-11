@@ -129,8 +129,6 @@ def file_post_save(sender, instance, **kwargs):
                             if isinstance(df_championship.iloc[idx - 1].squeeze()[2], int):
                                 classif = df_championship.iloc[idx - 1].squeeze()[2]
                             else:
-                                if df_championship.iloc[idx - 1].squeeze()[2][0:1] == 'P':
-                                    print('oi')
                                 classif = df_championship.iloc[idx - 1].squeeze()[2][0:1]
 
                             score = 0.0
@@ -310,9 +308,11 @@ def file_post_save(sender, instance, **kwargs):
                     try:
                         if score > 0.0:
                             athlete2MemberID = team.athlete_2.athlete_code
-                            RankingClassification.objects.update_or_create(
+                            RankingClassification.objects.create(
                                 classification=0,
                                 scorePoints=score,
+                                team=team.id,
+                                team_name=team.name,
                                 athlete1MemberID=team.athlete_1.athlete_code,
                                 athlete1Name=team.athlete_1.name,
                                 athlete1Age=team.athlete_1.age(),
@@ -331,6 +331,7 @@ def file_post_save(sender, instance, **kwargs):
                         RankingClassification.objects.create(
                             classification=0,
                             scorePoints=score,
+                            team=team.id,
                             athlete1MemberID=team.athlete_1.athlete_code,
                             athlete1Name=team.athlete_1.name,
                             athlete1Age=team.athlete_1.age(),

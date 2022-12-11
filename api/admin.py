@@ -40,6 +40,7 @@ class RankingClassificationAdmin(admin.ModelAdmin):
                     'category_description',
                     'ranking',
                     'ranking_description',
+                    'team',
                     'athlete1MemberID',
                     'athlete1Name',
                     'athlete1Age',
@@ -48,3 +49,11 @@ class RankingClassificationAdmin(admin.ModelAdmin):
                     'athlete2Name',
                     'athlete2Age',
                     'athlete2Club')
+    list_filter = ('classification',
+                    'scorePoints',
+                    'championship',
+                    'period_date',
+                    'category_description',
+                    'ranking_description',
+                    'team',
+                    'team_name')
