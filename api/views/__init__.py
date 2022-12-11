@@ -3,3 +3,4 @@ from .view_category import ViewCategory
 from .view_ranking import ViewRanking
 from .view_ranking_query import RankingClassificationViewset
 from .view_file import FileViewSet
+from .view_classification_score import ClassificationScoreViewset

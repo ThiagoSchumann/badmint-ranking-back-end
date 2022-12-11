@@ -381,3 +381,21 @@ def file_post_save(sender, instance, **kwargs):
 
                 except ClassificationScore.DoesNotExist:
                     pass
+
+        category = ''
+        classification = 0
+        for item in RankingClassification.objects.all().order_by('category', '-scorePoints').values():
+            ranking_classification = RankingClassification.objects.get(id=item['id'])
+            if category != ranking_classification.category:
+                category = ranking_classification.category
+                classification = 0
+
+            classification += 1
+            ranking_classification.classification = classification
+            ranking_classification.save()
+
+
+
+
+
+

@@ -5,11 +5,12 @@ from django.urls import path, include
 from django.shortcuts import redirect
 from rest_framework import routers
 
-from api.views import SwaggerSchemaView, ViewCategory, ViewRanking, FileViewSet, RankingClassificationViewset
+from api.views import SwaggerSchemaView, ViewCategory, ViewRanking, RankingClassificationViewset, \
+    ClassificationScoreViewset
 
 router = routers.DefaultRouter()
 router.register(r'category', ViewCategory)
-#router.register(r'file', FileViewSet)
+router.register(r'classification-score', ClassificationScoreViewset)
 router.register(r'ranking', ViewRanking)
 router.register(r'ranking-query', RankingClassificationViewset)
 
