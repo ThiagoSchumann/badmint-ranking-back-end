@@ -28,13 +28,18 @@ class ClassificationScoreAdmin(admin.ModelAdmin):
                     'classification',
                     'score',
                     'expiration_date')
+    list_filter = ('team',
+                   'championship',
+                   'category',
+                   'classification',
+                   'score',
+                   'expiration_date')
 
 
 @admin.register(RankingClassification)
 class RankingClassificationAdmin(admin.ModelAdmin):
     list_display = ('classification',
                     'scorePoints',
-                    'championship',
                     'period_date',
                     'category',
                     'category_description',
@@ -50,10 +55,21 @@ class RankingClassificationAdmin(admin.ModelAdmin):
                     'athlete2Age',
                     'athlete2Club')
     list_filter = ('classification',
-                    'scorePoints',
-                    'championship',
-                    'period_date',
-                    'category_description',
-                    'ranking_description',
-                    'team',
-                    'team_name')
+                   'scorePoints',
+                   'period_date',
+                   'category_description',
+                   'ranking_description',
+                   'team',
+                   'team_name')
+
+
+@admin.register(Team)
+class TeamAdmin(admin.ModelAdmin):
+    list_display = ('athlete_1',
+                    'athlete_2',
+                    'category',
+                    'name')
+    list_filter = ('athlete_1',
+                   'athlete_2',
+                   'category',
+                   'name')

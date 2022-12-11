@@ -121,10 +121,18 @@ def file_post_save(sender, instance, **kwargs):
 
                     if category.name[0:1] == 'D':
                         if athlete1 is not None:
-                            team = Team.objects.create(
+                            team = Team.objects.update_or_create(
                                 athlete_1=athlete1,
                                 athlete_2=athlete,
-                                name=athlete1.name + '  e  ' + athlete.name
+                                name=athlete1.name + '  e  ' + athlete.name,
+                                category=category
+                            )
+
+                            team = Team.objects.get(
+                                athlete_1=athlete1,
+                                athlete_2=athlete,
+                                name=athlete1.name + '  e  ' + athlete.name,
+                                category=category
                             )
                             if isinstance(df_championship.iloc[idx - 1].squeeze()[2], int):
                                 classif = df_championship.iloc[idx - 1].squeeze()[2]
@@ -199,21 +207,49 @@ def file_post_save(sender, instance, **kwargs):
                             else:
                                 score = 320
 
-                            ClassificationScore.objects.create(
-                                team=team,
-                                championship=championship,
-                                category=category,
-                                classification=classif,
-                                score=score,
-                                expiration_date=championship.occurrence_date + timedelta(
-                                    weeks=52) if championship.occurrence_date else None,
-                            )
+                            try:
+                                classification_score = ClassificationScore.objects.filter(
+                                    # team_id=team.id,
+                                    championship=championship,
+                                    category=category,
+                                    classification=classif,
+                                    score=score,
+                                    expiration_date=championship.occurrence_date + timedelta(
+                                        weeks=52) if championship.occurrence_date else None
+                                )
+                                ClassificationScore.objects.create(
+                                    team=team,
+                                    championship=championship,
+                                    category=category,
+                                    classification=classif,
+                                    score=score,
+                                    expiration_date=championship.occurrence_date + timedelta(
+                                        weeks=52) if championship.occurrence_date else None,
+                                )
+                            except ObjectDoesNotExist:
+                                ClassificationScore.objects.create(
+                                    team=team,
+                                    championship=championship,
+                                    category=category,
+                                    classification=classif,
+                                    score=score,
+                                    expiration_date=championship.occurrence_date + timedelta(
+                                        weeks=52) if championship.occurrence_date else None,
+                                )
 
                     else:
-                        team = Team.objects.create(
+                        team = Team.objects.update_or_create(
                             athlete_1=athlete,
-                            name=athlete.name
+                            name=athlete.name,
+                            category=category
                         )
+
+                        team = Team.objects.get(
+                            athlete_1=athlete,
+                            name=athlete.name,
+                            category=category
+                        )
+
                         if isinstance(df_championship.iloc[idx].squeeze()[2], int):
                             classif = df_championship.iloc[idx].squeeze()[2]
                         else:
@@ -300,7 +336,7 @@ def file_post_save(sender, instance, **kwargs):
         for category in Category.objects.all():
             classification = 0
             score = 0.0
-            for team in Team.objects.all():
+            for team in Team.objects.filter(category=category):
                 try:
                     for classificationScore in ClassificationScore.objects.filter(team=team, category=category):
                         score = score + classificationScore.score

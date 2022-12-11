@@ -1,5 +1,5 @@
 from django.db import models
-from api.models import Athlete
+from api.models import Athlete, Category
 
 
 class Team(models.Model):
@@ -13,6 +13,11 @@ class Team(models.Model):
                                   verbose_name='Atleta 2',
                                   null=True,
                                   related_name='athlete_2')
+    category = models.ForeignKey(Category,
+                                 on_delete=models.CASCADE,
+                                 verbose_name='Categoria',
+                                 null=True,
+                                 related_name='category')
     name = models.TextField(max_length=255,
                             verbose_name='Nome',
                             null=True)
