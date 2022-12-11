@@ -207,7 +207,8 @@ def file_post_save(sender, instance, **kwargs):
                                 category=category,
                                 classification=classif,
                                 score=score,
-                                expiration_date=championship.occurrence_date + timedelta(weeks=52) if championship.occurrence_date else None,
+                                expiration_date=championship.occurrence_date + timedelta(
+                                    weeks=52) if championship.occurrence_date else None,
                             )
 
                     else:
@@ -294,23 +295,22 @@ def file_post_save(sender, instance, **kwargs):
                             category=category,
                             classification=classif,
                             score=score,
-                            expiration_date=championship.occurrence_date + timedelta(weeks=52) if championship.occurrence_date else None,
+                            expiration_date=championship.occurrence_date + timedelta(
+                                weeks=52) if championship.occurrence_date else None,
                         )
 
-        for team in Team.objects.all():
+        for category in Category.objects.all():
+            classification = 0
             score = 0.0
-            for category in Category.objects.all():
+            for team in Team.objects.all():
                 try:
-                    test = ClassificationScore.objects.all().filter(team=team, category=category)
+                    for classificationScore in ClassificationScore.objects.filter(team=team, category=category):
+                        score = score + classificationScore.score
 
-                    if test is not None:
-
-                        for classificationScore in ClassificationScore.objects.all().filter(team=team, category=category):
-                            score = score + classificationScore.score
-
-                        try:
+                    try:
+                        if score > 0.0:
                             athlete2MemberID = team.athlete_2.athlete_code
-                            RankingClassification.objects.create(
+                            RankingClassification.objects.update_or_create(
                                 classification=0,
                                 scorePoints=score,
                                 athlete1MemberID=team.athlete_1.athlete_code,
@@ -327,20 +327,20 @@ def file_post_save(sender, instance, **kwargs):
                                 athlete2Age=team.athlete_2.age(),
                                 athlete2Club=team.athlete_2.club,
                             )
-                        except:
-                            RankingClassification.objects.create(
-                                classification=0,
-                                scorePoints=score,
-                                athlete1MemberID=team.athlete_1.athlete_code,
-                                athlete1Name=team.athlete_1.name,
-                                athlete1Age=team.athlete_1.age(),
-                                athlete1Club=team.athlete_1.club,
-                                category=category.id,
-                                category_description=category.name,
-                                ranking=1,
-                                ranking_description='Ranking Estadual SC',
-                                period_date=instance.championship_date,
-                            )
+                    except:
+                        RankingClassification.objects.create(
+                            classification=0,
+                            scorePoints=score,
+                            athlete1MemberID=team.athlete_1.athlete_code,
+                            athlete1Name=team.athlete_1.name,
+                            athlete1Age=team.athlete_1.age(),
+                            athlete1Club=team.athlete_1.club,
+                            category=category.id,
+                            category_description=category.name,
+                            ranking=1,
+                            ranking_description='Ranking Estadual SC',
+                            period_date=instance.championship_date,
+                        )
 
                 except ClassificationScore.DoesNotExist:
                     pass

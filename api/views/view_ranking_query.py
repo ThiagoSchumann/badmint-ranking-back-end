@@ -10,7 +10,7 @@ class RankingClassificationViewset(viewsets.ModelViewSet):
     queryset = RankingClassification.objects.all()
     serializer_class = RankingClassificationSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter]
-    filterset_fields = ['category', 'ranking', 'athlete1MemberID',
+    filterset_fields = ['category', 'category_description', 'ranking', 'athlete1MemberID',
                         'athlete1Name', 'athlete1Age', 'athlete1Club', 'period_date', 'championship', ]
-    search_fields = ['category', 'ranking', 'athlete1MemberID',
+    search_fields = ['category', 'category_description', 'ranking', 'athlete1MemberID',
                      'athlete1Name', 'athlete1Age', 'athlete1Club', 'period_date', 'championship']
