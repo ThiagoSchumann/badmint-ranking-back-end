@@ -61,12 +61,23 @@ def file_post_save(sender, instance, **kwargs):
         )
 
         for idx in df.index:
-            Athlete.objects.update_or_create(
-                name=pd.Series(data=df.iloc[idx].squeeze())["Name"],
-                birth_date=pd.Series(data=df.iloc[idx].squeeze())["DOB"],
-                athlete_code=pd.Series(data=df.iloc[idx].squeeze())["Member ID"],
-                club=pd.Series(data=df.iloc[idx].squeeze())["Club"],
-            )
+            try:
+                athlete = Athlete.objects.get(
+                    athlete_code=pd.Series(data=df.iloc[idx].squeeze())["Member ID"]
+                )
+            except ObjectDoesNotExist:
+                try:
+                    athlete = Athlete.objects.get(
+                        name=pd.Series(data=df.iloc[idx].squeeze())["Name"]
+                    )
+                except ObjectDoesNotExist:
+                    Athlete.objects.update_or_create(
+                        name=pd.Series(data=df.iloc[idx].squeeze())["Name"],
+                        birth_date=pd.Series(data=df.iloc[idx].squeeze())["DOB"],
+                        athlete_code=pd.Series(data=df.iloc[idx].squeeze())["Member ID"],
+                        club=pd.Series(data=df.iloc[idx].squeeze())["Club"],
+                    )
+
     elif instance.type == TypeFile.CHAMPIONSHIP:
         championship_sheet = pd.read_excel(
             MEDIA_ROOT + '/' + instance.file.name,
