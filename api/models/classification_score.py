@@ -17,7 +17,8 @@ class ClassificationScore(models.Model):
     expiration_date = models.DateField(null=True)
 
     class Meta:
-        verbose_name = 'Resultados de Campeonatos'
+        verbose_name = 'Resultado de Campeonato'
+        verbose_name_plural = 'Resultados de Campeonatos'
 
     def __str__(self):
         return self.championship.name + ' -> ' + self.team.name

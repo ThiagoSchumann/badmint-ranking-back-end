@@ -41,6 +41,7 @@ class File(models.Model):
 
     class Meta:
         verbose_name = 'Arquivo de Importação'
+        verbose_name_plural = 'Arquivos de Importação'
 
     def __str__(self):
         return self.name
