@@ -24,3 +24,5 @@ staticfiles/
 media_root/
 
 __pycache__/
+
+venv/
